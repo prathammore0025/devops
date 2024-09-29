@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building the application...'
+                // Example command to build your application
+                sh 'npm install'  // For Node.js applications
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                // Example command to run your tests
+                sh 'npm test'  // For running tests in Node.js applications
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying the application...'
+                // Example command to deploy your application
+                sh 'docker-compose up -d'  // Example for deploying with Docker
+            }
+        }
+
+        stage('Cleanup') {
+            steps {
+                echo 'Cleaning up...'
+                // Example command to clean up any resources
+                sh 'docker-compose down'  // Example for cleaning up Docker containers
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed.'
+        }
+        always {
+            echo 'Cleaning up workspace...'
+            cleanWs()
+        }
+    }
+}
